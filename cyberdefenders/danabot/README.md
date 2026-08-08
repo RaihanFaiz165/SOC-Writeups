@@ -14,7 +14,7 @@ The SOC team has detected suspicious activity in the network traffic, revealing 
 
 ## Investigation
 
-The investigation start by examining the PCAP file in Wireshark. A DNS filter was applied first to identify the initial network activity. The earliest DNS query shows that the victim host 10.2.14.101 attempted to resolve the domain portfolio.serveirc.com. Since the domain itself was unfamiliar, it was verified using VirusTotal. The result shows that the domain itself had been flagged malicious by multiple vendor and associated with DanaBot.
+The investigation start by examining the PCAP file in Wireshark. A DNS filter was applied first to identify the initial network activity. The earliest DNS query shows that the victim host 10.2.14.101 attempted to resolve the domain 'portfolio.serveirc.com'. Since the domain itself was unfamiliar, it was verified using VirusTotal. The result shows that the domain itself had been flagged malicious by multiple vendor and associated with DanaBot.
 
 ![VirusTotal domain lookup for portfolio.serveirc.com showing DanaBot](images/02-virustotal-domain-check.png)
 
@@ -46,14 +46,14 @@ The script then creates a WScript.shell object and uses its Run() method to exec
 | Type | Indicator/Artifact | Description |
 |---|---|---|
 | IP Address | 10.2.14.101 | Victim IP Address |
-| Domain | portofolio.serveirc.com | Domain contacted by the victim |
+| Domain | 'portfolio.serveirc.com' | Domain contacted by the victim |
 | IP Address | 62.173.142.148 | DNS response for portofolio.serveirc.com |
 | URL | /login.php | HTTP GET request in PCAP |
 | File | allegato_708.js | Filename indicated by the HTTP response's Content-Disposition |
 | File Artifact | login.php | The exported object's contents contained the JavaScript payload |
 | Hash (SHA256) | 847b4ad90b1daba2d9117a8e05776f3f902dda593fb1252289538acf476c4268 | SHA-256 hash of the exported JavaScript payload, checked against VirusTotal and identified as malicious/associated with DanaBot |
-| Domain | soundata.top | Remote domain contacted by the JavaScript payload to retrieve the second stage DLL |
-| URL | http://soundata.top/resources.dll | HTTP GET request specified in the deobfuscated JavaScript for downloading the DLL payload |
+| Domain | soundata[.]top | Remote domain contacted by the JavaScript payload to retrieve the second stage DLL |
+| URL | 'hxxp://soundata[.]top/resources[.]dll' | HTTP GET request specified in the deobfuscated JavaScript for downloading the DLL payload |
 | File | resources.dll | Second stage DLL downloaded by the JavaScript payload |
 | Hash (MD5) | e758e07113016aca55d9eda2b0ffeebe | MD5 hash of the exported DLL |
 | Process | wscript.exe | Windows Script Host process observed in the public sandbox report executing the JavaScript payload |
