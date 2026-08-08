@@ -6,6 +6,7 @@
 **Tactics:** Execution, Command and Control
 **Tools:** Wireshark, VirusTotal, ANY.RUN, NetworkMiner
 **Difficulty:** Easy | **Time:** 30 mins
+**Lab Reference:** [DanaBot CyberDefenders](https://cyberdefenders.org/blueteam-ctf-challenges/danabot/)
 
 ## Scenario
 
