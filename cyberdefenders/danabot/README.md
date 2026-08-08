@@ -51,7 +51,7 @@ The script then creates a WScript.shell object and uses its Run() method to exec
 | URL | /login.php | HTTP GET request in PCAP |
 | File | allegato_708.js | Filename indicated by the HTTP response's Content-Disposition |
 | File Artifact | login.php | The exported object's contents contained the JavaScript payload |
-| Hash (port6) | 847b4ad90b1daba2d9117a8e05776f3f902dda593fb1252289538acf476c4268 | SHA-256 hash of the exported JavaScript payload, checked against VirusTotal and identified as malicious/associated with DanaBot |
+| Hash (SHA256) | 847b4ad90b1daba2d9117a8e05776f3f902dda593fb1252289538acf476c4268 | SHA-256 hash of the exported JavaScript payload, checked against VirusTotal and identified as malicious/associated with DanaBot |
 | Domain | soundata.top | Remote domain contacted by the JavaScript payload to retrieve the second stage DLL |
 | URL | http://soundata.top/resources.dll | HTTP GET request specified in the deobfuscated JavaScript for downloading the DLL payload |
 | File | resources.dll | Second stage DLL downloaded by the JavaScript payload |
