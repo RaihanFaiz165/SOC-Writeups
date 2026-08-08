@@ -27,12 +27,11 @@ The SHA 256 hash of the login.txt file was calculated by the sha256sum tool and 
 ## Javascript Payload Analysis
 
 The Javascript itself was heavily obfuscated, making it difficult for me to understand on how the script works. After the script was deobfuscate, i examined several parts of the code to understand what the file was doing to the computer. I searched the SHA-256 hash of the extracted JavaScript in ANY.RUN public reports. The report shows that the JavaScript was executed by wscript.exe.
+![ANY.RUN sandbox report showing wscript.exe executing the JavaScript payload](images/05-anyrun-sandbox-report.png)
 
 ![Deobfuscated JavaScript payload source code](images/04-javascript-deobfuscated.png)
 
 While reading the code, The first part that caught my attention is Wscript.CreateObject (MSXML2.XMLHTPP) object and sent a GET request to soundata.top/resources.dll. After a little bit of searching, i found out that Wscript.CreateObject() is a windows script host method that can be used by JScript to create an instanse of a COM object. Another finding is that MSXML2.XMLHTTP was used to send an HTTP request and receive the response. Based on my understanding, this function creates a GET request to the soundata.top domain and request the file resources.dll, the domain was also checked using VirusTotal.
-
-![ANY.RUN sandbox report showing wscript.exe executing the JavaScript payload](images/05-anyrun-sandbox-report.png)
 
 ![VirusTotal URL lookup for soundata.top/resources.dll showing DanaBot association](images/06-virustotal-soundata-url.png)
 
