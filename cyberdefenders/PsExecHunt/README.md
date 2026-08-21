@@ -1,6 +1,6 @@
 # SOC Incident Investigation Case Study: Investigating PsExec Hunt Lab
 
-![0-PsExec-Hunt](images/0-PsExec-Hunt.png)
+![0-PsExec-Hunt](images-psexec/0-PsExec-Hunt.png)
 
 ## Scenario
 
@@ -10,29 +10,28 @@ An alert from the Intrusion Detection System (IDS) flagged suspicious lateral mo
 
 The investigation starts by identifying the host responsible for the suspicious lateral movement activity. A Wireshark filter was applied to display only SMB communication in wireshark. Suspicious activity showed that the IP 10.0.0.130 starts a SMB negotiate protocol request towards IP 10.0.0.133.
 
-![1-smb-negotiate](images/1-smb-negotiate.png)
+![1-smb-negotiate](images-psexec/1-smb-negotiate.png)
 
 in packet 132, the IP 10.0.0.130 sends a session setup requests and by inspecting the packet. It seems that the host HR-PC is the device that has been compromised based by the scenario and is now currently using the account ssales on that host. After the session setup response, a tree connect request tree was sent by the IP 10.0.0.130 to 10.0.0.133 IPC$ with success status, a tree connect request and response means that the server gives the client all information about access authorization for the requested SMB share. If the share name has a $ at the end like IPC$, it means the share is hidden, usually the system creates hidden shares, but users can create them too.
 
-![2-smb-share](images/2-smb-share.png)
+![2-smb-share](images-psexec/2-smb-share.png)
 
 The attacker then proceeds to make a tree connect request to the ADMIN$ share on 10.0.0.133. The connection proves successful based on tree connect response after the request. Shortly afterward, the attacker create a request file named PSEXESVC.exe.
 
-![3-request-file](images/3-request-file.png)
+![3-request-file](images-psexec/3-request-file.png)
+
+![4-first-destination](images-psexec/4-first-destination.png)
 
 At this point, the destination IP address had been identified, but the destination IP hostname target machine had not been identified. In order to identify the target hostname, the provided hint was followed by applying the ntlmssp.challenge.target_name filter in Wireshark. The result of NTLMSSP Challenge contained target information such as NetBIOS Domain Name and NetBIOS Computer Name, both identifying the machine as SALES-PC. Since the challenge originated from 10.0.0.133, i correlated the 10.0.0.133 IP with SALES-PC.
 
-![4-first-destination](images/4-first-destination.png)
+![5-second-destination-host](images-psexec/5-second-destination-host.png)
+![6-identified-second-destination](images-psexec/6-identified-second-destination.png)
 
 The investigation then showed that 10.0.0.130 initiated another SMB connection, but this time towards 10.0.0.131. The session setup exchange showed the IEUser account being used and response indicated a successful authentication. Further inspection of the second target information 10.0.0.131 as MARKETING-PC. Similar activity was observed on MARKETING-PC. The attacker successfully connected to the ADMIN$ share and created PSEXESVC.exe. This information shows that the attacker used different account for the SMB session to MARKETING-PC, the attacker used IEUSER while the earlier session to SALES-PC, the attacker used ssales account.
 
-![5-second-destination-host](images/5-second-destination-host.png)
+![7-other-status](images-psexec/7-other-status.png)
 
 Further investigation of the authentication traffic revealed other accounts attempts againts SALES-PC and MARKETING-PC. The unnamed account tries to do an NTLMSSP authentication but received STATUS_MORE_PROCESSING_REQUIRED, STATUS_LOGON_FAILURE or STATUS_ACCESS_DENIED and another account named jdoe, experience a STATUS_MORE_PROCESING_REQUIRED and STATUS_LOGON_FAILURE. The ssales and IEUser accounts also experience STATUS_MORE_PROCESSING_REQUIRED before succeeding in the authentication process.
-
-![6-identified-second-destination](images/6-identified-second-destination.png)
-
-![7-other-status](images/7-other-status.png)
 
 ## PsExec Analysis
 
