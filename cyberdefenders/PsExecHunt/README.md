@@ -1,7 +1,7 @@
 # SOC Incident Investigation Case Study: Investigating PsExec Hunt Lab
 
 ![0-PsExec-Hunt](images-psexec/0-PsExec-Hunt.png)
-
+**Platform:** CyberDefenders SOC Analyst Tier 1, Level 2 **Category:** Network Forensics **Tactics:** Execution, Defense Evasion, Discovery, Lateral Movement **Tool:** Wireshark **Difficulty:** Easy | **Time:** 30 mins **Lab Reference:** [PsExec Hunt CyberDefenders](https://cyberdefenders.org/blueteam-ctf-challenges/psexec-hunt/)
 ## Scenario
 
 An alert from the Intrusion Detection System (IDS) flagged suspicious lateral movement activity involving PsExec. This indicates potential unauthorized access and movement across the network. As a SOC Analyst, your task is to investigate the provided PCAP file to trace the attacker's activities. Identify their entry point, the machines targeted, the extent of the breach, and any critical indicators that reveal their tactics and objectives within the compromised environment.
